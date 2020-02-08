@@ -1,8 +1,8 @@
 # Create a new file api_gateway.tf in the same directory as our lambda.tf from the previous step. First, configure 
 # the root "REST API" object, as follows
 resource "aws_api_gateway_rest_api" "cvs_backend" {
-    name        = "ServerlessExample"
-    description = "Terraform Serverless Application Example"
+    name        = "${var.data_repo_name}-Services"
+    description = "Enterprise Data Repository - Vehicle Services"
 }
 
 
