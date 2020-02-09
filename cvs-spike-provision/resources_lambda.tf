@@ -35,6 +35,7 @@ resource "aws_iam_role" "backend_lambda_role" {
 EOF
 }
 
+# Include IAM policy for permissions to write to EventBridge from within Lambda function
 resource "aws_iam_role_policy" "backend_lambda_role_policy" {
   name = "${var.app_name}-backend-role-policy"
   role = aws_iam_role.backend_lambda_role.id

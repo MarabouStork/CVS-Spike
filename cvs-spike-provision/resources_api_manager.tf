@@ -2,7 +2,7 @@
 # the root "REST API" object, as follows
 resource "aws_api_gateway_rest_api" "cvs_backend" {
     name        = "${var.data_repo_name}-Services"
-    description = "Enterprise Data Repository - Vehicle Services"
+    description = "${var.data_repo_description} - Vehicle Services"
 }
 
 
