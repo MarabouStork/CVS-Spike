@@ -13,11 +13,23 @@ variable "data_repo_description" {
     default = "Enterprise Data Environment"
 }
 
+variable "region" {
+    default = "eu-west-2"
+}
+
 ################################################
 #       Event Bridge Service Bus Settings      #
 ################################################
 variable "vehicle_events_bus_name" {
-    default = "EDE-vehicle-events"
+    default = "EDE-vehicleEvents"
+}
+
+variable "vehicle_events_completed_tests_rule_name" {
+    default = "EDE-vehicleEvents.completedTest"
+}
+
+variable "vehicle_events_completed_tests_rule_filter" {
+    default = "{\"source\": [\"ede-services.vehicletests\"], \"detail-type\": [\"completed-test\"]}"
 }
 
 ################################################

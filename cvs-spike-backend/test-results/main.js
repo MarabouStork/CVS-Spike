@@ -12,10 +12,10 @@ function sendCompletedTest(testResults) {
 
     return eventBridge.putEvents({
         Entries: [
-          {
+        {
             EventBusName: eventBusName,
             Source: source,
-            DetailType: 'CompletedTest',
+            DetailType: 'completed-test',               // This could be detail-type
             Detail: `{ "VehicleVIN": "ABC123" }`,
         }]
     }).promise();
