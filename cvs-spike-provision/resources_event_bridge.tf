@@ -28,7 +28,7 @@ resource "null_resource" "completed_vehicle_test_rule" {
     }
 
     provisioner "local-exec" {
-        command = "aws events put-rule --name ${self.triggers.rule_name} --event-bus-name ${self.triggers.service_bus_name} --event-pattern {\"source\":[\"ede-services.vehicletests\"],\"detail-type\":[\"completed-test\"]} --role-arn ${aws_iam_role.vehicle_events_role.arn}"
+        command = "aws events put-rule --name ${self.triggers.rule_name} --event-bus-name ${self.triggers.service_bus_name} --event-pattern {\"source\":[\"ede-services.vehicletests\"],\"detail-type\":[\"completed-test\"]} --role-arn ${aws_iam_role.vehicle_events_role.arn}  > ${data.template_file.create_vehicle_events_completed_tests_rule.rendered}"
     }
 
     provisioner "local-exec" {
@@ -62,5 +62,24 @@ resource "aws_iam_role" "vehicle_events_role" {
     }]
 }
 EOF
+}
+
+data "template_file" "create_vehicle_events_completed_tests_rule" {
+    template = "${path.module}/${var.aws_cli_output_folder}/create_vehicle_events_completed_tests_rule.json"
+}
+
+data "local_file" "create_vehicle_events_completed_tests_rule" {
+    filename = "${data.template_file.create_vehicle_events_completed_tests_rule.rendered}"
+    depends_on = [
+        null_resource.completed_vehicle_test_rule
+    ]
+}
+
+locals {
+  vehicleEvents_completedTests_rule_data = jsondecode(data.local_file.create_vehicle_events_completed_tests_rule.content)
+}
+
+output "vehicleEvents_completedTests_rule_arn" {
+  value = local.vehicleEvents_completedTests_rule_data.RuleArn
 }
 

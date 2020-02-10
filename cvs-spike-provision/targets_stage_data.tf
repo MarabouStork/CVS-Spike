@@ -30,6 +30,15 @@ resource "aws_lambda_function" "event_completed_tests_stage_data" {
     role = aws_iam_role.vehicle_events_role.arn
 }
 
+## Give the rule permissions to invoke this lambda function
+resource "aws_lambda_permission" "allow_completed_test_target1_execution" {
+  function_name = aws_lambda_function.event_completed_tests_stage_data.function_name
+  statement_id  = "AllowExecutionFromCompletedTestRule"
+  action        = "lambda:InvokeFunction"
+  principal     = "events.amazonaws.com"
+  source_arn    = local.vehicleEvents_completedTests_rule_data.RuleArn
+}
+
 ## Attach the completed test rule to the above lambda through a new event target
 resource "null_resource" "create_vehicle_events_completed_test_target1" {
     
@@ -55,4 +64,3 @@ resource "null_resource" "create_vehicle_events_completed_test_target1" {
         aws_iam_role.vehicle_events_role
     ]   
 }
-

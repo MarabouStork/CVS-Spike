@@ -3,7 +3,7 @@
 const AWS = require('aws-sdk');
 
 const region = 'eu-west-2';
-const eventBusName = 'EDE-vehicle-events';
+const eventBusName = 'EDE-vehicleEvents';
 const source = 'ede-services.vehicletests';
 
 function sendCompletedTest(testResults) {
@@ -31,7 +31,7 @@ exports.handler = function(event, context, callback) {
                 headers: {
                   'Content-Type': 'text/html; charset=utf-8'
                 },
-                body: '<p>Hello world!</p>'
+                body: result
             }
 
             callback(null, response)

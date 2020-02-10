@@ -1,6 +1,9 @@
 # Local .terraform directories
 **/.terraform/*
 
+# cli output directory
+**/.aws-cli-output/*
+
 # .tfstate files
 *.tfstate
 *.tfstate.*

@@ -38,3 +38,11 @@ variable "vehicle_events_completed_tests_rule_filter" {
 variable "staging_bucket_test_results" {
     default = "staging-vehicle-test-results"
 }
+
+
+################################################
+#                Path Settings                 #
+################################################
+variable "aws_cli_output_folder" {
+    default = ".aws-cli-output"
+}
