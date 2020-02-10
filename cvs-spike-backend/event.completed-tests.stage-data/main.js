@@ -3,29 +3,17 @@
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
-exports.handler = (event, context, callback) => {  
+async function writeToBucket(key, json) {
 
-    console.log('LogScheduledEvent');
-    console.log('Received event:', JSON.stringify(event, null, 2));
+    var params = {
+        Bucket: "staging-vehicle-test-results",
+        Key: key + ".json",
+        Body: JSON.stringify(json)
+    };
 
-    // var bucketName = process.env.bucketName;
-    // var keyName = getKeyName(folder, filename);
-    // var content = 'This is a sample text file';
+    return s3.putObject(params).promise();     
+}
 
-    // var params = { Bucket: bucketName, Key: keyName, Body: content };
-
-    // s3.putObject(params, function (err, data) {
-    //     if (err)
-    //         console.log(err)
-    //     else
-    //         console.log("Successfully saved object to " + bucketName + "/" + keyName);
-    // });
-
-    callback(null, 'Finished');        
-
+exports.handler = async (event, context) => {  
+    return await writeToBucket(context.awsRequestId, event.detail);
 };
-
-// function getKeyName(folder, filename) {
-//     return folder + '/' + filename;
-// }
-

@@ -30,13 +30,33 @@ resource "aws_lambda_function" "event_completed_tests_stage_data" {
     role = aws_iam_role.vehicle_events_role.arn
 }
 
+# The Lambda function needs write permissions to the S3 bucket
+resource "aws_iam_role_policy" "allow_completed_test_s3_write" {
+  name = "${aws_iam_role.vehicle_events_role.name}-s3-policy"
+  role = aws_iam_role.vehicle_events_role.id
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+    {
+        "Effect": "Allow",
+        "Action": [
+            "s3:PutObject"
+        ],
+        "Resource": ["${aws_s3_bucket.staging_test_results.arn}/*"]
+    }]
+}
+EOF
+}
+
 ## Give the rule permissions to invoke this lambda function
 resource "aws_lambda_permission" "allow_completed_test_target1_execution" {
   function_name = aws_lambda_function.event_completed_tests_stage_data.function_name
   statement_id  = "AllowExecutionFromCompletedTestRule"
   action        = "lambda:InvokeFunction"
   principal     = "events.amazonaws.com"
-  source_arn    = local.vehicleEvents_completedTests_rule_data.RuleArn
+  source_arn    = local.completed_vehicle_test_rule_data.RuleArn
 }
 
 ## Attach the completed test rule to the above lambda through a new event target
